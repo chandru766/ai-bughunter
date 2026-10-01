@@ -1,0 +1,64 @@
+<html><body style='background:#1e1e1e; color:#d4d4d4; font-family:monospace; padding:40px;'><h2>TEST AUTOMATION RESULTS</h2><pre style='font-size:16px;'>...........................................                              [100%]
+============================== warnings summary ===============================
+backend\models\database.py:12
+  C:\kali-shared\ai-bughunter\backend\models\database.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+backend\analyzer\correlation.py:8
+  C:\kali-shared\ai-bughunter\backend\analyzer\correlation.py:8: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class RelationshipData(BaseModel):
+
+backend\auth_bank\schemas.py:10
+  C:\kali-shared\ai-bughunter\backend\auth_bank\schemas.py:10: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class AuthContextResponse(BaseModel):
+
+backend\models\database.py:148
+  C:\kali-shared\ai-bughunter\backend\models\database.py:148: PytestCollectionWarning: cannot collect test class 'TestPlan' because it has a __init__ constructor (from: tests/unit/test_phase16_security.py)
+    class TestPlan(Base):
+
+backend\models\database.py:30
+  C:\kali-shared\ai-bughunter\backend\models\database.py:30: PytestCollectionWarning: cannot collect test class 'TestStatus' because it has a __new__ constructor (from: tests/unit/test_phase16_security.py)
+    class TestStatus(str, enum.Enum):
+
+backend\models\database.py:164
+  C:\kali-shared\ai-bughunter\backend\models\database.py:164: PytestCollectionWarning: cannot collect test class 'TestResult' because it has a __init__ constructor (from: tests/unit/test_phase16_security.py)
+    class TestResult(Base):
+
+backend\models\database.py:148
+  C:\kali-shared\ai-bughunter\backend\models\database.py:148: PytestCollectionWarning: cannot collect test class 'TestPlan' because it has a __init__ constructor (from: tests/unit/test_phase19_research.py)
+    class TestPlan(Base):
+
+backend\models\database.py:30
+  C:\kali-shared\ai-bughunter\backend\models\database.py:30: PytestCollectionWarning: cannot collect test class 'TestStatus' because it has a __new__ constructor (from: tests/unit/test_phase19_research.py)
+    class TestStatus(str, enum.Enum):
+
+backend\models\database.py:164
+  C:\kali-shared\ai-bughunter\backend\models\database.py:164: PytestCollectionWarning: cannot collect test class 'TestResult' because it has a __init__ constructor (from: tests/unit/test_phase19_research.py)
+    class TestResult(Base):
+
+backend\models\database.py:30
+  C:\kali-shared\ai-bughunter\backend\models\database.py:30: PytestCollectionWarning: cannot collect test class 'TestStatus' because it has a __new__ constructor (from: tests/unit/test_phase20_ai_security.py)
+    class TestStatus(str, enum.Enum):
+
+tests/unit/test_phase16_security.py: 10 warnings
+tests/unit/test_phase17_security.py: 6 warnings
+tests/unit/test_phase18_observability.py: 13 warnings
+tests/unit/test_phase19_research.py: 18 warnings
+tests/unit/test_phase20_ai_security.py: 6 warnings
+tests/unit/test_phase21_agent_security.py: 8 warnings
+tests/unit/test_phase22_multi_agent.py: 6 warnings
+  C:\kali-shared\ai-bughunter\backend\observability\logger.py:19: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "timestamp": datetime.utcnow().isoformat() + "Z",
+
+tests/unit/test_phase16_security.py: 12 warnings
+tests/unit/test_phase18_observability.py: 5 warnings
+tests/unit/test_phase19_research.py: 13 warnings
+tests/unit/test_phase20_ai_security.py: 11 warnings
+tests/unit/test_phase21_agent_security.py: 24 warnings
+tests/unit/test_phase22_multi_agent.py: 42 warnings
+  C:\Users\chand\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\sql\schema.py:4296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return util.wrap_callable(lambda ctx: fn(), fn)  # type: ignore[call-arg, no-any-return, no-untyped-call]  # noqa: E501
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+43 passed, 184 warnings in 34.45s
+</pre></body></html>

@@ -1,0 +1,27 @@
+{
+  "status": "EXECUTED",
+  "result_id": 6,
+  "finding_id": 6,
+  "ai_analysis": {
+    "title": "Mocked Information Disclosure",
+    "category": "Information Disclosure",
+    "target": "api.example.test",
+    "endpoint": "/api/users/{id}",
+    "observation": "Server headers indicate outdated software.",
+    "root_cause": "Misconfiguration.",
+    "impact": "Exposure of internal server structure.",
+    "confidence": "MEDIUM",
+    "supporting_evidence": [],
+    "counter_evidence": [
+      "Server version may be spoofed."
+    ],
+    "validation_steps": [
+      "Check HTTP headers manually."
+    ],
+    "recommended_severity": "LOW",
+    "citations": [
+      "K1"
+    ],
+    "status": "NEEDS_VALIDATION"
+  }
+}

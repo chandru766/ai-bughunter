@@ -1,0 +1,10 @@
+{
+  "title": "Mocked Information Disclosure",
+  "id": 2,
+  "severity": "LOW",
+  "validation_status": "UNVALIDATED",
+  "uuid": "c2fa0e7b-9fc6-4e98-8785-38f481c4671c",
+  "program_id": 4,
+  "category": "Information Disclosure",
+  "status": "NEEDS_VALIDATION"
+}

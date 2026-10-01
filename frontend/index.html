@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI BugHunter Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo"><h2>🛡️ AI BugHunter</h2></div>
+            <ul class="nav-links">
+                <li class="active" data-page="dashboard">Dashboard</li>
+                <li data-page="ai-security">AI Security</li>
+                <li data-page="agent-security">Agent Security</li>
+                <li data-page="multi-agent">Multi-Agent</li>
+                <li data-page="research">Research Orchestration</li>
+                <li data-page="programs">Programs & Targets</li>
+                <li data-page="auth">Auth Bank</li>
+                <li data-page="testing">Active Testing</li>
+                <li data-page="findings">AI Findings</li>
+                <li data-page="chains">Finding Chains</li>
+                <li data-page="reports">Reports</li>
+                <li data-page="audit-logs">Security Events</li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header class="topbar">
+                <h1>Dashboard</h1>
+                <div class="status-indicator" id="global-status">
+                    <span class="dot green"></span> System Secure
+                </div>
+            </header>
+            
+            <div id="dashboard-view" class="view active">
+                <div class="stats-grid" id="dashboard-stats">
+                    <!-- Stats injected via JS -->
+                </div>
+                <div class="stats-grid" id="system-status-grid" style="margin-top:20px;">
+                    <!-- System Status injected via JS -->
+                </div>
+            </div>
+
+            <!-- AI Security View -->
+            <div id="ai-security-view" class="view">
+                <div class="header-actions">
+                    <h2>AI Security Lab</h2>
+                </div>
+                
+                <div style="margin-top:20px; background:var(--bg-panel); padding:20px; border-radius:8px;">
+                    <h3>AI Applications</h3>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <input type="number" id="ai-app-program-id" placeholder="Program ID" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="text" id="ai-app-name" placeholder="Name" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="text" id="ai-app-url" placeholder="Base URL (e.g. http://127.0.0.1:9100)" style="flex:2; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <button class="btn" onclick="createAIApplication()">Add App</button>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px; background:var(--bg-panel); padding:20px; border-radius:8px;">
+                    <h3>AI Endpoints & Test Cases</h3>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <input type="number" id="ai-tc-app-id" placeholder="App ID" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <select id="ai-tc-category" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                            <option value="PROMPT_INJECTION">PROMPT_INJECTION</option>
+                            <option value="SYSTEM_PROMPT_LEAKAGE">SYSTEM_PROMPT_LEAKAGE</option>
+                            <option value="RAG_POISONING">RAG_POISONING</option>
+                            <option value="TOOL_ABUSE">TOOL_ABUSE</option>
+                            <option value="EXCESSIVE_AGENCY">EXCESSIVE_AGENCY</option>
+                        </select>
+                        <input type="text" id="ai-tc-name" placeholder="Test Name" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <button class="btn" onclick="createAITestCase()">Add Test Case</button>
+                    </div>
+                </div>
+
+                <table class="data-table" id="ai-testcases-table" style="margin-top:20px;">
+                    <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Agent Security View -->
+            <div id="agent-security-view" class="view">
+                <div class="header-actions">
+                    <h2>Agent Security Lab</h2>
+                </div>
+                
+                <div style="margin-top:20px; background:var(--bg-panel); padding:20px; border-radius:8px;">
+                    <h3>AI Agents</h3>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <input type="number" id="agent-app-id" placeholder="App ID" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="number" id="agent-program-id" placeholder="Program ID" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="text" id="agent-name" placeholder="Agent Name" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <button class="btn" onclick="createAgent()">Add Agent</button>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px; background:var(--bg-panel); padding:20px; border-radius:8px;">
+                    <h3>Agent Tools</h3>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <input type="number" id="tool-agent-id" placeholder="Agent ID" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="text" id="tool-name" placeholder="Tool Name (e.g. get_user)" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <select id="tool-risk" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                            <option value="READ_ONLY">READ_ONLY</option>
+                            <option value="LOW_IMPACT">LOW_IMPACT</option>
+                            <option value="HIGH_IMPACT">HIGH_IMPACT</option>
+                            <option value="BLOCKED">BLOCKED</option>
+                        </select>
+                        <button class="btn" onclick="createTool()">Add Tool</button>
+                    </div>
+                </div>
+
+                <table class="data-table" id="agent-table" style="margin-top:20px;">
+                    <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Program ID</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Multi-Agent View -->
+            <div id="multi-agent-view" class="view">
+                <div class="header-actions">
+                    <h2>Multi-Agent Operations</h2>
+                </div>
+                
+                <div style="margin-top:20px; background:var(--bg-panel); padding:20px; border-radius:8px;">
+                    <h3>Agent Capabilities</h3>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <input type="number" id="cap-agent-id" placeholder="Agent ID" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="text" id="cap-name" placeholder="Capability Name (e.g. WEB_ANALYSIS)" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="text" id="cap-resource" placeholder="Resource (e.g. ENDPOINT)" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <button class="btn" onclick="createCapability()">Add Capability</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid" style="margin-top:20px;">
+                    <div style="background:var(--bg-panel); padding:15px; border-radius:8px;">
+                        <h4>Recent Messages</h4>
+                        <table class="data-table" id="messages-table">
+                            <thead><tr><th>ID</th><th>Sender</th><th>Receiver</th><th>Type</th><th>Status</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div style="background:var(--bg-panel); padding:15px; border-radius:8px;">
+                        <h4>Agent Tasks</h4>
+                        <table class="data-table" id="tasks-table">
+                            <thead><tr><th>ID</th><th>Agent ID</th><th>Task</th><th>Status</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research Orchestration View -->
+            <div id="research-view" class="view">
+                <div class="header-actions">
+                    <h2>Research Orchestration</h2>
+                </div>
+                
+                <div style="margin-top:20px; background:var(--bg-panel); padding:20px; border-radius:8px;">
+                    <h3>Session Management</h3>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <input type="number" id="research-program-id" placeholder="Program ID" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="text" id="research-session-name" placeholder="Session Name" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <button class="btn" onclick="createResearchSession()">Create Session</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid" id="research-coverage-grid" style="margin-top:20px;">
+                    <div class="stat-card"><h3>Tested Endpoints</h3><p class="stat-value" id="res-tested">0</p></div>
+                    <div class="stat-card"><h3>Untested Endpoints</h3><p class="stat-value" id="res-untested">0</p></div>
+                    <div class="stat-card"><h3>Active Recommendations</h3><p class="stat-value" id="res-recs">0</p></div>
+                </div>
+
+                <table class="data-table" id="sessions-table" style="margin-top:20px;">
+                    <thead><tr><th>ID</th><th>Program</th><th>Name</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                
+                <div id="recommendation-panel" style="margin-top:20px; display:none;">
+                    <h3>AI Advisor Recommendations</h3>
+                    <div id="recommendation-cards" style="display:flex; flex-direction:column; gap:15px; margin-top:10px;"></div>
+                </div>
+            </div>
+
+            <!-- Programs View -->
+            <div id="programs-view" class="view">
+                <h2>Programs & Targets</h2>
+                <table class="data-table" id="programs-table" style="margin-top:20px;">
+                    <thead><tr><th>ID</th><th>Name</th><th>URL</th><th>Status</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Auth Bank View (Phase 9) -->
+            <div id="auth-view" class="view">
+                <div class="header-actions">
+                    <h2>Authentication Bank</h2>
+                </div>
+                <div style="background:var(--bg-panel); padding:20px; border-radius:8px; border-left:4px solid var(--accent-primary);">
+                    <h4 style="color:var(--accent-primary)">SECURITY WARNING</h4>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:5px;">
+                        Authentication credentials are sensitive secrets. Only add credentials for accounts you are authorized to test.
+                        Credentials are encrypted at rest and are NOT sent to the AI analysis layer.
+                    </p>
+                </div>
+                
+                <div style="margin-top:20px; background:var(--bg-panel); padding:20px; border-radius:8px; display:flex; gap:10px; align-items:center;">
+                    <input type="text" id="auth-name" placeholder="Name (e.g. Account A)" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                    <input type="text" id="auth-label" placeholder="Label (e.g. user-a)" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                    <select id="auth-type" style="padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <option>JWT</option><option>COOKIE</option><option>CUSTOM_HEADER</option>
+                    </select>
+                    <input type="password" id="auth-secret" placeholder="Secret Token" style="flex:2; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                    <button class="btn" onclick="addAuthContext()">Add Credential</button>
+                </div>
+
+                <table class="data-table" id="auth-table" style="margin-top:20px;">
+                    <thead><tr><th>ID</th><th>Name</th><th>Label</th><th>Type</th><th>Secret</th><th>Status</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Testing View (Phase 8/9) -->
+            <div id="testing-view" class="view">
+                <div class="header-actions">
+                    <h2>Safe Testing Engine</h2>
+                    <button class="btn btn-reject" onclick="toggleKillSwitch()" id="btn-killswitch" style="background:var(--accent-danger)">🔴 STOP ALL TESTING</button>
+                </div>
+                
+                <div style="margin-top:20px; background:var(--bg-panel); padding:20px; border-radius:8px;">
+                    <h3>Run BOLA Authentication Swap Test</h3>
+                    <div style="display:flex; gap:10px; align-items:center; margin-top:10px;">
+                        <input type="text" id="bola-url" placeholder="Target Endpoint (e.g. http://127.0.0.1:9000/api/users/2/profile)" style="flex:2; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="number" id="bola-source-id" placeholder="Source Auth ID (e.g. 1)" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <input type="number" id="bola-target-id" placeholder="Target Auth ID (e.g. 2)" style="flex:1; padding:10px; background:var(--bg-dark); color:white; border:1px solid var(--border-color);">
+                        <button class="btn" onclick="planBolaTest()">Create BOLA Plan</button>
+                    </div>
+                </div>
+
+                <table class="data-table" id="plans-table" style="margin-top:20px;">
+                    <thead><tr><th>ID</th><th>Category</th><th>URL</th><th>Level</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Findings View -->
+            <div id="findings-view" class="view">
+                <h2>AI Findings & Human Validation</h2>
+                <table class="data-table" id="findings-table" style="margin-top:20px;">
+                    <thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Severity</th><th>Status</th><th>Validation</th><th>Actions</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <div id="finding-details-modal" style="display:none; background:var(--bg-panel); padding:20px; border-radius:8px; margin-top:20px; border:1px solid var(--border-color);">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Chains View -->
+            <div id="chains-view" class="view">
+                <h2>Finding Chains</h2>
+                <table class="data-table" id="chains-table" style="margin-top:20px;">
+                    <thead><tr><th>Chain ID</th><th>Findings</th><th>Combined Impact</th><th>Status</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Reports View -->
+            <div id="reports-view" class="view">
+                <h2>Security Reports</h2>
+                <table class="data-table" id="reports-table" style="margin-top:20px;">
+                    <thead><tr><th>Report ID</th><th>Finding ID</th><th>Date</th><th>Actions</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <div id="report-details-modal" style="display:none; background:var(--bg-dark); padding:20px; border-radius:8px; margin-top:20px; border:1px solid var(--border-color); overflow:auto;">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Audit Logs View -->
+            <div id="audit-logs-view" class="view">
+                <div class="header-actions">
+                    <h2>Security Events & Audit Logs</h2>
+                    <div>
+                        <a href="http://127.0.0.1:8000/audit-logs/export?format=csv" target="_blank"><button class="btn">⬇ Export CSV</button></a>
+                        <a href="http://127.0.0.1:8000/audit-logs/export?format=json" target="_blank"><button class="btn">⬇ Export JSON</button></a>
+                    </div>
+                </div>
+                <div style="margin-top:20px; display:flex; gap:10px; align-items:center;">
+                    <button class="btn" onclick="fetchAuditLogs(1)">Refresh</button>
+                    <span style="color:var(--text-muted)">Showing latest 50 events.</span>
+                </div>
+                <table class="data-table" id="audit-table" style="margin-top:20px;">
+                    <thead><tr><th>Timestamp</th><th>Severity</th><th>Event</th><th>Object</th><th>Result</th><th>Request ID</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
